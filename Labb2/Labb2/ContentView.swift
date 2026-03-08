@@ -21,7 +21,18 @@ struct ContentView: View {
     @State private var isFinished = false
 
     var body: some View {
-        Text("Quiz")
+        VStack(spacing: 24) {
+            Text("Question \(currentIndex + 1) of \(questions.count)")
+                .font(.subheadline)
+                .foregroundColor(.gray)
+
+            Text(questions[currentIndex].text)
+                .font(.title2)
+                .fontWeight(.semibold)
+                .multilineTextAlignment(.center)
+                .padding()
+        }
+        .padding()
     }
 }
 
