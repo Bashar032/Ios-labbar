@@ -32,29 +32,58 @@ struct ContentView: View {
     }
 
     var body: some View {
-        VStack(spacing: 24) {
-            Text("Question \(currentIndex + 1) of \(questions.count)")
-                .font(.subheadline)
-                .foregroundColor(.gray)
+        if isFinished {
+            // Results screen
+            VStack(spacing: 24) {
+                Text("Quiz Finished!")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
 
-            Text(questions[currentIndex].text)
-                .font(.title2)
-                .fontWeight(.semibold)
-                .multilineTextAlignment(.center)
+                Text("Your score: \(score) / \(questions.count)")
+                    .font(.title2)
+                    .foregroundColor(.purple)
+
+                Text(score == questions.count ? "Perfect! 🎉" : score >= 3 ? "Well done! 👍" : "Keep practicing! 💪")
+                    .font(.headline)
+                    .foregroundColor(.gray)
+
+                Button("Play Again") {
+                    currentIndex = 0
+                    score = 0
+                    isFinished = false
+                }
                 .padding()
+                .background(Color.purple)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+            }
+            .padding()
+        } else {
+            // Question screen
+            VStack(spacing: 24) {
+                Text("Question \(currentIndex + 1) of \(questions.count)")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
 
-            ForEach(questions[currentIndex].options, id: \.self) { option in
-                Button(action: { answerTapped(option) }) {
-                    Text(option)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.purple.opacity(0.15))
-                        .foregroundColor(.purple)
-                        .cornerRadius(10)
+                Text(questions[currentIndex].text)
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .multilineTextAlignment(.center)
+                    .padding()
+
+                ForEach(questions[currentIndex].options, id: \.self) { option in
+                    Button(action: { answerTapped(option) }) {
+                        Text(option)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.purple.opacity(0.15))
+                            .foregroundColor(.purple)
+                            .cornerRadius(10)
+                    }
                 }
             }
+            .padding()
         }
-        .padding()
     }
 }
 
