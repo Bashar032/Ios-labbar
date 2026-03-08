@@ -20,6 +20,17 @@ struct ContentView: View {
     @State private var score = 0
     @State private var isFinished = false
 
+    func answerTapped(_ answer: String) {
+        if answer == questions[currentIndex].correctAnswer {
+            score += 1
+        }
+        if currentIndex + 1 < questions.count {
+            currentIndex += 1
+        } else {
+            isFinished = true
+        }
+    }
+
     var body: some View {
         VStack(spacing: 24) {
             Text("Question \(currentIndex + 1) of \(questions.count)")
@@ -31,6 +42,17 @@ struct ContentView: View {
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
                 .padding()
+
+            ForEach(questions[currentIndex].options, id: \.self) { option in
+                Button(action: { answerTapped(option) }) {
+                    Text(option)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.purple.opacity(0.15))
+                        .foregroundColor(.purple)
+                        .cornerRadius(10)
+                }
+            }
         }
         .padding()
     }
